@@ -1,0 +1,136 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "autoincrement",
+ "creation": "2026-01-31 00:32:05.313587",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "personal_details_section",
+  "first_name",
+  "last_name",
+  "display_picture",
+  "gender",
+  "column_break_bcda",
+  "middle_name",
+  "full_name",
+  "aadhar_card_number",
+  "aadhar_card",
+  "professional_details_section",
+  "occupation",
+  "workspace",
+  "column_break_umyq",
+  "salary"
+ ],
+ "fields": [
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "middle_name",
+   "fieldtype": "Data",
+   "label": "Middle Name"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "personal_details_section",
+   "fieldtype": "Section Break",
+   "label": "Personal Details"
+  },
+  {
+   "fieldname": "column_break_bcda",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "display_picture",
+   "fieldtype": "Attach Image",
+   "label": "Display Picture"
+  },
+  {
+   "fieldname": "aadhar_card_number",
+   "fieldtype": "Data",
+   "label": "Aadhar Card Number"
+  },
+  {
+   "fieldname": "aadhar_card",
+   "fieldtype": "Attach",
+   "label": "Aadhar Card"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "Male\nFemale"
+  },
+  {
+   "fieldname": "professional_details_section",
+   "fieldtype": "Section Break",
+   "label": "Professional Details"
+  },
+  {
+   "fieldname": "occupation",
+   "fieldtype": "Data",
+   "label": "Occupation"
+  },
+  {
+   "fieldname": "column_break_umyq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Monthly (in INR)",
+   "fieldname": "salary",
+   "fieldtype": "Currency",
+   "label": "Salary",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "workspace",
+   "fieldtype": "Data",
+   "label": "Workspace"
+  }
+ ],
+ "grid_page_length": 50,
+ "image_field": "display_picture",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-31 00:50:02.982602",
+ "modified_by": "Administrator",
+ "module": "Rent Management System",
+ "name": "Tenant",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name"
+}

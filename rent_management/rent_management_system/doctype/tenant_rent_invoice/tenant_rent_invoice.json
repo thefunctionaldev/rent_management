@@ -1,0 +1,144 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-01-31 15:38:54.394989",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_p7mt",
+  "naming_series",
+  "tenant",
+  "tenant_name",
+  "room",
+  "total_days",
+  "posting_date",
+  "column_break_vcam",
+  "billing_month",
+  "billing_year",
+  "monthly_rent",
+  "days_stayed",
+  "final_amount",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_p7mt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Tenant Rent Invoice",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "tenant",
+   "fieldtype": "Link",
+   "label": "Tenant",
+   "options": "Tenant",
+   "reqd": 1
+  },
+  {
+   "fieldname": "room",
+   "fieldtype": "Link",
+   "label": "Room",
+   "options": "Tenant Space",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_month",
+   "fieldtype": "Select",
+   "label": "Billing Month",
+   "options": "\nJanuary\nFeburary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nseptember\nOctober\nNovember\nDecember",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_year",
+   "fieldtype": "Int",
+   "label": "Billing Year",
+   "length": 4,
+   "non_negative": 1
+  },
+  {
+   "fetch_from": "room.room_rent",
+   "fieldname": "monthly_rent",
+   "fieldtype": "Currency",
+   "label": "Monthly Rent",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "total_days",
+   "fieldtype": "Int",
+   "label": "Total Days"
+  },
+  {
+   "fieldname": "column_break_vcam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "days_stayed",
+   "fieldtype": "Int",
+   "label": "Days Stayed"
+  },
+  {
+   "fieldname": "final_amount",
+   "fieldtype": "Currency",
+   "label": "Final Amount"
+  },
+  {
+   "fetch_from": "tenant.full_name",
+   "fieldname": "tenant_name",
+   "fieldtype": "Data",
+   "label": "Tenant Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Naming Series",
+   "options": "TRI-.####",
+   "reqd": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-01-31 15:58:34.765189",
+ "modified_by": "Administrator",
+ "module": "Rent Management System",
+ "name": "Tenant Rent Invoice",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
