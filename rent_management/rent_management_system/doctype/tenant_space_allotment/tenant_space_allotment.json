@@ -2,6 +2,7 @@
  "actions": [],
  "allow_auto_repeat": 1,
  "allow_rename": 1,
+ "autoname": "UUID",
  "creation": "2026-02-01 00:03:18.740988",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -10,7 +11,9 @@
   "amended_from",
   "tenant",
   "room",
-  "allotment_date"
+  "column_break_prvq",
+  "allotment_date",
+  "status"
  ],
  "fields": [
   {
@@ -44,16 +47,27 @@
    "fieldname": "allotment_date",
    "fieldtype": "Date",
    "label": "Allotment Date"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nAlloted\nReady to Allot"
+  },
+  {
+   "fieldname": "column_break_prvq",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-01 00:07:52.029655",
+ "modified": "2026-02-01 00:41:31.582269",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant Space Allotment",
+ "naming_rule": "UUID",
  "owner": "Administrator",
  "permissions": [
   {

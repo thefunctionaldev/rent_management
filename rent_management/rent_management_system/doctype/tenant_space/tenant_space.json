@@ -66,7 +66,6 @@
   },
   {
    "fetch_from": "tenant.full_name",
-   "fetch_if_empty": 1,
    "fieldname": "tenant_name",
    "fieldtype": "Data",
    "label": "Tenant Name",
@@ -91,7 +90,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-01 00:00:09.690894",
+ "modified": "2026-02-01 01:02:07.855547",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant Space",
