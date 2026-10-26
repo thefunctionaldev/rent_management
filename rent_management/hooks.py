@@ -53,6 +53,19 @@ app_license = "mit"
 # include app icons in desk
 # app_include_icons = "rent_management/public/icons.svg"
 
+# Frontend (Vue app in /frontend, served at /rent)
+website_route_rules = [{"from_route": "/rent/<path:app_path>", "to_route": "rent"}]
+
+add_to_apps_screen = [
+	{
+		"name": "rent_management",
+		"logo": "/assets/rent_management/frontend/favicon.svg",
+		"title": "Rent Management",
+		"route": "/rent",
+		"has_permission": "rent_management.api.has_app_permission",
+	}
+]
+
 # Home Pages
 # ----------
 

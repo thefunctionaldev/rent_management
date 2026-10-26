@@ -1,0 +1,151 @@
+<template>
+	<Modal
+		open
+		title="Record payment"
+		:subtitle="
+			selected
+				? `${selected.tenant_name} · ${selected.name}`
+				: 'Payment against a rent invoice'
+		"
+		@close="$emit('close')"
+	>
+		<form id="payment-form" class="space-y-5" @submit.prevent="save">
+			<Field v-if="!invoice" label="Invoice" required>
+				<select v-model="form.rent_invoice" class="input" required>
+					<option value="" disabled>Select an unpaid invoice</option>
+					<option v-for="inv in openInvoices" :key="inv.name" :value="inv.name">
+						{{ inv.tenant_name }} · {{ inv.billing_month }} {{ inv.billing_year }} ·
+						{{ money(inv.outstanding_amount) }} due
+					</option>
+				</select>
+			</Field>
+
+			<div
+				v-if="selected"
+				class="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3"
+			>
+				<div>
+					<p class="text-xs text-slate-500">Outstanding</p>
+					<p class="tabular text-lg font-semibold">
+						{{ money(selected.outstanding_amount) }}
+					</p>
+				</div>
+				<div class="text-right">
+					<p class="text-xs text-slate-500">Room · Period</p>
+					<p class="text-sm font-medium">
+						{{ selected.room }} · {{ selected.billing_month }}
+						{{ selected.billing_year }}
+					</p>
+				</div>
+			</div>
+
+			<div class="grid gap-4 sm:grid-cols-2">
+				<Field label="Amount" required>
+					<input
+						v-model="form.amount"
+						type="number"
+						min="0"
+						step="0.01"
+						class="input tabular text-base font-semibold"
+						required
+					/>
+				</Field>
+				<Field label="Payment date" required>
+					<input v-model="form.payment_date" type="date" class="input" required />
+				</Field>
+			</div>
+
+			<div>
+				<span class="label">Mode of payment</span>
+				<div class="grid grid-cols-3 gap-2 sm:grid-cols-6">
+					<button
+						v-for="mode in modes"
+						:key="mode"
+						type="button"
+						class="rounded-lg border px-2 py-2 text-xs font-medium transition"
+						:class="
+							form.mode_of_payment === mode
+								? 'border-brand-500 bg-brand-50 text-brand-700 ring-2 ring-brand-100'
+								: 'border-slate-200 text-slate-600 hover:bg-slate-50'
+						"
+						@click="form.mode_of_payment = mode"
+					>
+						{{ mode }}
+					</button>
+				</div>
+			</div>
+			<Field
+				v-if="!['Cash', 'Other'].includes(form.mode_of_payment)"
+				label="Reference number"
+				required
+			>
+				<input
+					v-model="form.reference_no"
+					class="input"
+					required
+					placeholder="UTR / cheque / transaction id"
+				/>
+			</Field>
+		</form>
+		<template #footer>
+			<Button @click="$emit('close')">Cancel</Button>
+			<Button
+				variant="success"
+				type="submit"
+				form="payment-form"
+				:loading="loading"
+				:icon="Check"
+				>Record payment</Button
+			>
+		</template>
+	</Modal>
+</template>
+
+<script setup>
+import { Check } from "lucide-vue-next";
+import { computed, reactive, watch } from "vue";
+
+import { get, post } from "@/api";
+import Button from "@/components/Button.vue";
+import Field from "@/components/Field.vue";
+import Modal from "@/components/Modal.vue";
+import { boot } from "@/store";
+import { useAction, useResource } from "@/useResource";
+import { money } from "@/utils";
+
+const props = defineProps({ invoice: { type: Object, default: null } });
+const emit = defineEmits(["close"]);
+
+const modes = ["Cash", "UPI", "Bank Transfer", "Cheque", "Card", "Other"];
+const form = reactive({
+	rent_invoice: props.invoice?.name || "",
+	amount: props.invoice?.outstanding_amount || "",
+	payment_date: boot.today,
+	mode_of_payment: "UPI",
+	reference_no: "",
+});
+
+const invoices = useResource(
+	() => (props.invoice ? [] : get("get_invoices", { page_length: 500 }).then((r) => r.invoices)),
+	{ initial: [] }
+);
+const openInvoices = computed(() =>
+	invoices.data.value.filter((i) => i.docstatus === 1 && i.outstanding_amount > 0)
+);
+const selected = computed(
+	() => props.invoice || openInvoices.value.find((i) => i.name === form.rent_invoice)
+);
+
+watch(selected, (inv) => {
+	if (inv && !props.invoice) form.amount = inv.outstanding_amount;
+});
+
+const { loading, run } = useAction(() => post("record_payment", form), {
+	success: () => `Payment of ${money(form.amount)} recorded`,
+});
+
+async function save() {
+	await run();
+	emit("close");
+}
+</script>

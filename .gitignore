@@ -53,3 +53,8 @@ jspm_packages/
 
 # Aider AI Chat
 .aider*
+
+# Frontend build output
+rent_management/public/frontend/
+rent_management/www/rent.html
+dump.rdb

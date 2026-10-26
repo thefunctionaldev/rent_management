@@ -71,6 +71,7 @@ def get_data(filters, as_on_date) -> list[dict]:
 		fields=[
 			"name",
 			"tenant",
+			"tenant_name",
 			"room",
 			"billing_month",
 			"billing_year",

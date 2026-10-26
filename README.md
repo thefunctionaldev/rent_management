@@ -27,6 +27,34 @@ A [Frappe](https://frappe.io) app to manage rooms, tenants, monthly rent invoice
   invoice is created for each active allotment (as draft, or submitted). Use **Generate Invoices Now** to run it
   for any month. A daily job marks unpaid invoices past their due date as Overdue.
 
+### Web app (`/rent`)
+
+Besides the Frappe desk, the app ships a Vue 3 + Tailwind frontend for property managers at
+**`https://<your-site>/rent`**. It uses the normal Frappe login and is available to users with the
+*Rent Manager* or *System Manager* role.
+
+- **Dashboard** - occupancy, collected vs invoiced, outstanding and overdue rent, 6-month collection chart,
+  overdue invoices and recent payments.
+- **Rooms** - every room as a card with its status, tenant and dues; allot, invoice or vacate in one click.
+- **Tenants** - searchable list and a profile page with the current stay, invoices, payments and stay history.
+- **Invoices** - filter by status / month, generate the month's invoices, create invoices with extra charges,
+  submit drafts, record payments, print, and send a WhatsApp reminder.
+- **Payments**, **Deposits** (collect, then settle with a live refund preview) and **Outstanding** (aging buckets).
+
+The frontend talks to the whitelisted methods in `rent_management/api.py`, which run every change through the
+regular DocType validations.
+
+`bench build` builds the frontend automatically. To work on it with hot reload:
+
+```bash
+cd apps/rent_management/frontend
+yarn install
+yarn dev   # http://localhost:8080/rent/, proxies API calls to the Frappe server on :8000
+```
+
+Log in on the Frappe server first. The dev server can't inject a CSRF token, so set `"ignore_csrf": 1` in the
+site's `site_config.json` while developing (never in production).
+
 ### Workflow
 
 1. Create **Tenant Space Types** and **Tenant Spaces** (rooms).
