@@ -41,6 +41,17 @@ class RentPayment(Document):
 				)
 			)
 
+	def before_cancel(self):
+		if (
+			self.deposit_settlement
+			and frappe.db.get_value("Security Deposit Settlement", self.deposit_settlement, "docstatus") == 1
+		):
+			frappe.throw(
+				_(
+					"This payment was made from Security Deposit Settlement {0}. Cancel the settlement instead."
+				).format(self.deposit_settlement)
+			)
+
 	def on_submit(self):
 		self.update_invoice()
 

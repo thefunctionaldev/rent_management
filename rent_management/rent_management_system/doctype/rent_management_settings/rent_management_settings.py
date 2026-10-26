@@ -16,7 +16,7 @@ class RentManagementSettings(Document):
 
 @frappe.whitelist()
 def generate_invoices_now(billing_month: str, billing_year: int, submit: bool = False):
-	frappe.only_for("System Manager")
+	frappe.only_for(("System Manager", "Rent Manager"))
 	created = generate_invoices(billing_month, billing_year, submit=frappe.utils.cint(submit))
 	frappe.msgprint(
 		_("{0} Rent Invoice(s) created for {1} {2}.").format(len(created), billing_month, billing_year)

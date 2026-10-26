@@ -7,6 +7,23 @@ frappe.ui.form.on("Tenant Space Allotment", {
 	},
 
 	refresh(frm) {
+		if (
+			frm.doc.status === "Vacated" &&
+			frm.doc.security_deposit > 0 &&
+			frm.doc.deposit_collected &&
+			!frm.doc.deposit_settlement
+		) {
+			frm.add_custom_button(
+				__("Deposit Settlement"),
+				() => {
+					frappe.new_doc("Security Deposit Settlement", {
+						tenant_space_allotment: frm.doc.name,
+					});
+				},
+				__("Create")
+			);
+		}
+
 		if (frm.doc.docstatus !== 1 || frm.doc.status !== "Active") return;
 
 		frm.add_custom_button(

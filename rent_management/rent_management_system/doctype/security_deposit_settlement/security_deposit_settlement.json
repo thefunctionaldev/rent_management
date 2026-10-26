@@ -1,0 +1,266 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-10-26 22:17:54.280997",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "tenant_space_allotment",
+  "tenant",
+  "tenant_name",
+  "room",
+  "column_break_dates",
+  "settlement_date",
+  "vacate_date",
+  "deposit_section",
+  "security_deposit",
+  "column_break_deposit",
+  "adjust_outstanding_rent",
+  "outstanding_rent",
+  "deductions_section",
+  "deductions",
+  "settlement_section",
+  "total_deductions",
+  "rent_adjusted",
+  "column_break_settlement",
+  "refund_amount",
+  "balance_payable_by_tenant",
+  "refund_section",
+  "mode_of_refund",
+  "reference_no",
+  "column_break_refund",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "DEP-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "DEP-.YYYY.-",
+   "print_hide": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "tenant_space_allotment",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Allotment",
+   "link_filters": "[[\"Tenant Space Allotment\",\"status\",\"=\",\"Vacated\"]]",
+   "options": "Tenant Space Allotment",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tenant_space_allotment.tenant",
+   "fieldname": "tenant",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Tenant",
+   "options": "Tenant",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "tenant.full_name",
+   "fieldname": "tenant_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tenant Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "tenant_space_allotment.room",
+   "fieldname": "room",
+   "fieldtype": "Link",
+   "label": "Room",
+   "options": "Tenant Space",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_dates",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "settlement_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Settlement Date",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tenant_space_allotment.vacate_date",
+   "fieldname": "vacate_date",
+   "fieldtype": "Date",
+   "label": "Vacate Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deposit_section",
+   "fieldtype": "Section Break",
+   "label": "Deposit"
+  },
+  {
+   "fetch_from": "tenant_space_allotment.security_deposit",
+   "fieldname": "security_deposit",
+   "fieldtype": "Currency",
+   "label": "Security Deposit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_deposit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Use the deposit to pay off this allotment's unpaid rent invoices.",
+   "fieldname": "adjust_outstanding_rent",
+   "fieldtype": "Check",
+   "label": "Adjust Outstanding Rent"
+  },
+  {
+   "fieldname": "outstanding_rent",
+   "fieldtype": "Currency",
+   "label": "Outstanding Rent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deductions_section",
+   "fieldtype": "Section Break",
+   "label": "Deductions"
+  },
+  {
+   "fieldname": "deductions",
+   "fieldtype": "Table",
+   "label": "Deductions",
+   "options": "Security Deposit Deduction"
+  },
+  {
+   "fieldname": "settlement_section",
+   "fieldtype": "Section Break",
+   "label": "Settlement"
+  },
+  {
+   "fieldname": "total_deductions",
+   "fieldtype": "Currency",
+   "label": "Total Deductions",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rent_adjusted",
+   "fieldtype": "Currency",
+   "label": "Rent Adjusted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_settlement",
+   "fieldtype": "Column Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "refund_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Refund to Tenant",
+   "read_only": 1
+  },
+  {
+   "description": "Deductions above the deposit plus any rent still unpaid.",
+   "fieldname": "balance_payable_by_tenant",
+   "fieldtype": "Currency",
+   "label": "Balance Payable by Tenant",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.refund_amount > 0",
+   "fieldname": "refund_section",
+   "fieldtype": "Section Break",
+   "label": "Refund Payment"
+  },
+  {
+   "fieldname": "mode_of_refund",
+   "fieldtype": "Select",
+   "label": "Mode of Refund",
+   "mandatory_depends_on": "eval:doc.refund_amount > 0",
+   "options": "\nCash\nUPI\nBank Transfer\nCheque\nOther"
+  },
+  {
+   "fieldname": "reference_no",
+   "fieldtype": "Data",
+   "label": "Reference No"
+  },
+  {
+   "fieldname": "column_break_refund",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Security Deposit Settlement",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-10-26 22:18:03.421593",
+ "modified_by": "Administrator",
+ "module": "Rent Management System",
+ "name": "Security Deposit Settlement",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Rent Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "tenant_name",
+ "track_changes": 1
+}

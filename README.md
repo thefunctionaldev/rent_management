@@ -16,6 +16,13 @@ A [Frappe](https://frappe.io) app to manage rooms, tenants, monthly rent invoice
   and the invoice tracks paid / outstanding amount with a status of Unpaid, Partly Paid, Paid or Overdue.
 - **Rent Payment** - records a payment (Cash, UPI, Bank Transfer, Cheque...) against an invoice and updates its
   outstanding amount.
+- **Security Deposit Settlement** - settles the deposit after the tenant vacates: record deductions (damages,
+  cleaning...), optionally use the deposit to pay off unpaid rent (posted as Rent Payments with mode
+  *Security Deposit*), and see the refund due to the tenant or the balance they still owe.
+- **Rent Outstanding report** - unpaid invoices with days overdue, aging buckets (0-30 / 31-60 / 61-90 / 90+),
+  totals and a chart. Filter by tenant, room or overdue only.
+- **Rent Manager role** - full access to everything in the app without needing System Manager. Assign it to the
+  people who run the property.
 - **Rent Management Settings** - rent due day, and automatic monthly invoicing. On the 1st of every month an
   invoice is created for each active allotment (as draft, or submitted). Use **Generate Invoices Now** to run it
   for any month. A daily job marks unpaid invoices past their due date as Overdue.
@@ -28,6 +35,8 @@ A [Frappe](https://frappe.io) app to manage rooms, tenants, monthly rent invoice
 4. Rent invoices are generated every month (or use *Create > Rent Invoice* on the allotment).
 5. Submit the invoice, then use *Create > Rent Payment* on it to record what the tenant paid.
 6. When the tenant moves out, click **Vacate** on the allotment; the last invoice is pro-rated to the vacate date.
+7. Tick **Deposit Collected** on the allotment when you receive the deposit. After vacating, use
+   *Create > Deposit Settlement* to settle it.
 
 ### Installation
 

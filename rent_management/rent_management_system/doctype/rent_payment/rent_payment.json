@@ -21,6 +21,7 @@
   "reference_no",
   "column_break_reference",
   "reference_date",
+  "deposit_settlement",
   "remarks_section",
   "remarks",
   "amended_from"
@@ -87,7 +88,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Mode of Payment",
-   "options": "Cash\nUPI\nBank Transfer\nCheque\nCard\nOther",
+   "options": "Cash\nUPI\nBank Transfer\nCheque\nCard\nSecurity Deposit\nOther",
    "reqd": 1
   },
   {
@@ -108,7 +109,7 @@
    "fieldname": "reference_no",
    "fieldtype": "Data",
    "label": "Reference No",
-   "mandatory_depends_on": "eval:!['Cash', 'Other'].includes(doc.mode_of_payment)"
+   "mandatory_depends_on": "eval:!['Cash', 'Security Deposit', 'Other'].includes(doc.mode_of_payment)"
   },
   {
    "fieldname": "column_break_reference",
@@ -137,13 +138,22 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "depends_on": "deposit_settlement",
+   "fieldname": "deposit_settlement",
+   "fieldtype": "Link",
+   "label": "Deposit Settlement",
+   "no_copy": 1,
+   "options": "Security Deposit Settlement",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-26 21:55:48.965565",
+ "modified": "2026-10-26 22:18:03.775185",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Rent Payment",
@@ -161,6 +171,21 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Rent Manager",
    "share": 1,
    "submit": 1,
    "write": 1

@@ -168,9 +168,14 @@
    "group": "Billing",
    "link_doctype": "Rent Payment",
    "link_fieldname": "tenant"
+  },
+  {
+   "group": "Deposit",
+   "link_doctype": "Security Deposit Settlement",
+   "link_fieldname": "tenant"
   }
  ],
- "modified": "2026-10-26 21:55:49.234245",
+ "modified": "2026-10-26 22:18:04.387964",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant",
@@ -186,6 +191,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Rent Manager",
    "share": 1,
    "write": 1
   }

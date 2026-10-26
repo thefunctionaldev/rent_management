@@ -88,3 +88,27 @@ class IntegrationTestTenantSpaceAllotment(IntegrationTestCase):
 		room = frappe.get_doc("Tenant Space", allotment.room)
 		self.assertEqual(room.status, "Available")
 		self.assertFalse(room.tenant)
+
+
+class IntegrationTestRentManagerRole(IntegrationTestCase):
+	def test_rent_manager_permissions(self):
+		email = "rent.manager@example.com"
+		if not frappe.db.exists("User", email):
+			frappe.get_doc(
+				{"doctype": "User", "email": email, "first_name": "Rent", "send_welcome_email": 0}
+			).insert()
+		user = frappe.get_doc("User", email)
+		user.add_roles("Rent Manager")
+
+		for doctype in (
+			"Tenant",
+			"Tenant Space",
+			"Tenant Space Allotment",
+			"Tenant Rent Invoice",
+			"Rent Payment",
+			"Security Deposit Settlement",
+		):
+			self.assertTrue(frappe.has_permission(doctype, "create", user=email), doctype)
+		for doctype in ("Tenant Space Allotment", "Tenant Rent Invoice", "Rent Payment"):
+			self.assertTrue(frappe.has_permission(doctype, "submit", user=email), doctype)
+		self.assertTrue(frappe.has_permission("Rent Management Settings", "write", user=email))

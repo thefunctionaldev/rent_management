@@ -50,7 +50,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-26 21:55:49.122554",
+ "modified": "2026-10-26 22:18:03.671510",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Rent Management Settings",
@@ -63,6 +63,16 @@
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Rent Manager",
    "share": 1,
    "write": 1
   }
