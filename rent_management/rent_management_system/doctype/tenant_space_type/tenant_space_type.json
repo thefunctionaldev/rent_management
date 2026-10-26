@@ -18,7 +18,6 @@
   {
    "fieldname": "type",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Type",
    "reqd": 1,
    "unique": 1
@@ -31,41 +30,47 @@
   {
    "fieldname": "standard_rent",
    "fieldtype": "Currency",
-   "label": "Standard Rent",
-   "non_negative": 1,
+   "in_list_view": 1,
+   "label": "Standard Monthly Rent",
    "reqd": 1
   },
   {
-   "default": "1",
+   "default": "0",
    "fieldname": "deposit_applicable",
    "fieldtype": "Check",
    "label": "Deposit Applicable"
   },
   {
-   "depends_on": "eval:doc.deposit_applicable == 1",
+   "depends_on": "deposit_applicable",
    "fieldname": "security_deposit",
    "fieldtype": "Currency",
    "label": "Security Deposit",
-   "mandatory_depends_on": "eval:doc.deposit_applicable == 1",
-   "non_negative": 1
+   "mandatory_depends_on": "deposit_applicable"
   },
   {
    "default": "0",
    "fieldname": "is_furnished",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "Is Furnished"
   },
   {
    "default": "0",
    "fieldname": "has_attached_bathroom",
    "fieldtype": "Check",
-   "label": "has attached bathroom"
+   "label": "Has Attached Bathroom"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-01-31 00:46:20.613461",
+ "links": [
+  {
+   "group": "Spaces",
+   "link_doctype": "Tenant Space",
+   "link_fieldname": "room_type"
+  }
+ ],
+ "modified": "2026-10-26 21:55:47.967358",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant Space Type",

@@ -6,16 +6,23 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "personal_details_section",
   "first_name",
-  "last_name",
-  "display_picture",
-  "gender",
-  "column_break_bcda",
   "middle_name",
+  "last_name",
+  "column_break_name",
   "full_name",
+  "status",
+  "contact_section",
+  "mobile_no",
+  "email_id",
+  "column_break_contact",
+  "permanent_address",
+  "personal_details_section",
+  "gender",
   "aadhar_card_number",
   "aadhar_card",
+  "column_break_bcda",
+  "display_picture",
   "professional_details_section",
   "occupation",
   "workspace",
@@ -26,7 +33,6 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "First Name",
    "reqd": 1
   },
@@ -41,8 +47,10 @@
    "label": "Last Name"
   },
   {
+   "bold": 1,
    "fieldname": "full_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Full Name",
    "read_only": 1
   },
@@ -63,18 +71,19 @@
   {
    "fieldname": "aadhar_card_number",
    "fieldtype": "Data",
-   "label": "Aadhar Card Number"
+   "label": "Aadhaar Card Number",
+   "length": 14
   },
   {
    "fieldname": "aadhar_card",
    "fieldtype": "Attach",
-   "label": "Aadhar Card"
+   "label": "Aadhaar Card"
   },
   {
    "fieldname": "gender",
    "fieldtype": "Select",
    "label": "Gender",
-   "options": "Male\nFemale"
+   "options": "\nMale\nFemale\nOther"
   },
   {
    "fieldname": "professional_details_section",
@@ -91,23 +100,77 @@
    "fieldtype": "Column Break"
   },
   {
-   "description": "Monthly (in INR)",
    "fieldname": "salary",
    "fieldtype": "Currency",
-   "label": "Salary",
-   "non_negative": 1
+   "label": "Monthly Income"
   },
   {
    "fieldname": "workspace",
    "fieldtype": "Data",
-   "label": "Workspace"
+   "label": "Workplace"
+  },
+  {
+   "fieldname": "column_break_name",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Active\nInactive"
+  },
+  {
+   "fieldname": "contact_section",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mobile No",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "column_break_contact",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "permanent_address",
+   "fieldtype": "Small Text",
+   "label": "Permanent Address"
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-01-31 00:50:02.982602",
+ "links": [
+  {
+   "group": "Occupancy",
+   "link_doctype": "Tenant Space Allotment",
+   "link_fieldname": "tenant"
+  },
+  {
+   "group": "Billing",
+   "link_doctype": "Tenant Rent Invoice",
+   "link_fieldname": "tenant"
+  },
+  {
+   "group": "Billing",
+   "link_doctype": "Rent Payment",
+   "link_fieldname": "tenant"
+  }
+ ],
+ "modified": "2026-10-26 21:55:49.234245",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant",
@@ -129,6 +192,8 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "full_name,mobile_no",
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],

@@ -2,6 +2,33 @@
 
 Rent Management System
 
+A [Frappe](https://frappe.io) app to manage rooms, tenants, monthly rent invoices and rent collection.
+
+### Features
+
+- **Tenant** - contact, personal (with Aadhaar checksum validation) and professional details.
+- **Tenant Space Type / Tenant Space** - room types with standard rent and security deposit, and rooms with live
+  occupancy status (Available / Reserved / Occupied / Under Renovation).
+- **Tenant Space Allotment** - allots a room to a tenant. Submitting it marks the room Occupied; the **Vacate**
+  button records the move-out date and frees the room. A room cannot be allotted to two tenants at once.
+- **Tenant Rent Invoice** - one invoice per allotment per month. Rent is pro-rated for the days actually occupied
+  (move-in and move-out months), extra charges (electricity, water, maintenance...) and a discount can be added,
+  and the invoice tracks paid / outstanding amount with a status of Unpaid, Partly Paid, Paid or Overdue.
+- **Rent Payment** - records a payment (Cash, UPI, Bank Transfer, Cheque...) against an invoice and updates its
+  outstanding amount.
+- **Rent Management Settings** - rent due day, and automatic monthly invoicing. On the 1st of every month an
+  invoice is created for each active allotment (as draft, or submitted). Use **Generate Invoices Now** to run it
+  for any month. A daily job marks unpaid invoices past their due date as Overdue.
+
+### Workflow
+
+1. Create **Tenant Space Types** and **Tenant Spaces** (rooms).
+2. Create a **Tenant**.
+3. Create and submit a **Tenant Space Allotment** for the tenant and room.
+4. Rent invoices are generated every month (or use *Create > Rent Invoice* on the allotment).
+5. Submit the invoice, then use *Create > Rent Payment* on it to record what the tenant paid.
+6. When the tenant moves out, click **Vacate** on the allotment; the last invoice is pro-rated to the vacate date.
+
 ### Installation
 
 You can install this app using the [bench](https://github.com/frappe/bench) CLI:

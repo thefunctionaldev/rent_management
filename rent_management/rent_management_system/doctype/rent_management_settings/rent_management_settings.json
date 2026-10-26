@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "creation": "2026-10-26 21:55:46.193452",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "invoicing_section",
+  "auto_generate_invoices",
+  "auto_submit_invoices",
+  "column_break_due",
+  "rent_due_day"
+ ],
+ "fields": [
+  {
+   "fieldname": "invoicing_section",
+   "fieldtype": "Section Break",
+   "label": "Monthly Invoicing"
+  },
+  {
+   "default": "1",
+   "description": "On the 1st of every month, create a rent invoice for each active allotment.",
+   "fieldname": "auto_generate_invoices",
+   "fieldtype": "Check",
+   "label": "Auto-generate Monthly Rent Invoices"
+  },
+  {
+   "default": "0",
+   "depends_on": "auto_generate_invoices",
+   "description": "If unchecked, invoices are created as drafts so they can be reviewed first.",
+   "fieldname": "auto_submit_invoices",
+   "fieldtype": "Check",
+   "label": "Submit Auto-generated Invoices"
+  },
+  {
+   "fieldname": "column_break_due",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "5",
+   "description": "Due date for new invoices. Defaults to the posting date when left as 0.",
+   "fieldname": "rent_due_day",
+   "fieldtype": "Int",
+   "label": "Rent Due Day of Month",
+   "non_negative": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-26 21:55:49.122554",
+ "modified_by": "Administrator",
+ "module": "Rent Management System",
+ "name": "Rent Management Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -6,22 +6,23 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "basic_information_section",
   "room_number",
-  "status",
-  "tenant",
-  "checkin_date",
-  "column_break_qjsp",
   "floor",
+  "column_break_qjsp",
+  "status",
   "room_type",
+  "room_rent",
+  "basic_information_section",
+  "tenant",
   "tenant_name",
-  "room_rent"
+  "column_break_occupancy",
+  "checkin_date",
+  "current_allotment"
  ],
  "fields": [
   {
    "fieldname": "room_number",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Room Number",
    "reqd": 1,
    "unique": 1
@@ -31,38 +32,42 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "Ground",
    "fieldname": "floor",
    "fieldtype": "Select",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Floor",
    "options": "\nGround\nFirst\nSecond\nThird\nFourth",
    "reqd": 1
   },
   {
+   "default": "Available",
+   "description": "Set to Occupied / Available automatically by Tenant Space Allotment",
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Status",
-   "options": "\nAvailable\nReserved\nOccupied\nUnder Renovation"
+   "options": "Available\nReserved\nOccupied\nUnder Renovation"
   },
   {
    "fieldname": "room_type",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Room Type",
    "options": "Tenant Space Type"
   },
   {
    "fieldname": "basic_information_section",
    "fieldtype": "Section Break",
-   "label": "Basic Information"
+   "label": "Current Occupancy"
   },
   {
-   "depends_on": "eval:doc.status == \"Occupied\"",
    "fieldname": "tenant",
    "fieldtype": "Link",
    "label": "Tenant",
-   "mandatory_depends_on": "eval:doc.status == \"Occupied\"",
-   "options": "Tenant"
+   "options": "Tenant",
+   "read_only": 1
   },
   {
    "fetch_from": "tenant.full_name",
@@ -72,25 +77,46 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.status == \"Occupied\"",
    "fieldname": "checkin_date",
    "fieldtype": "Date",
-   "label": "Checkin Date",
-   "mandatory_depends_on": "eval:doc.status == \"Occupied\""
+   "label": "Check-in Date",
+   "read_only": 1
   },
   {
    "fetch_from": "room_type.standard_rent",
+   "fetch_if_empty": 1,
    "fieldname": "room_rent",
    "fieldtype": "Currency",
-   "label": "Room Rent",
-   "non_negative": 1,
+   "in_list_view": 1,
+   "label": "Monthly Rent"
+  },
+  {
+   "fieldname": "column_break_occupancy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_allotment",
+   "fieldtype": "Link",
+   "label": "Current Allotment",
+   "options": "Tenant Space Allotment",
    "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-02-01 01:02:07.855547",
+ "links": [
+  {
+   "group": "Occupancy",
+   "link_doctype": "Tenant Space Allotment",
+   "link_fieldname": "room"
+  },
+  {
+   "group": "Billing",
+   "link_doctype": "Tenant Rent Invoice",
+   "link_fieldname": "room"
+  }
+ ],
+ "modified": "2026-10-26 21:55:48.310242",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant Space",

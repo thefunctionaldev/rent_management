@@ -2,64 +2,70 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.model.document import Document
 from frappe import _
+from frappe.model.document import Document
+
+# Verhoeff algorithm tables, used for the Aadhaar checksum
+VERHOEFF_D = (
+	(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+	(1, 2, 3, 4, 0, 6, 7, 8, 9, 5),
+	(2, 3, 4, 0, 1, 7, 8, 9, 5, 6),
+	(3, 4, 0, 1, 2, 8, 9, 5, 6, 7),
+	(4, 0, 1, 2, 3, 9, 5, 6, 7, 8),
+	(5, 9, 8, 7, 6, 0, 4, 3, 2, 1),
+	(6, 5, 9, 8, 7, 1, 0, 4, 3, 2),
+	(7, 6, 5, 9, 8, 2, 1, 0, 4, 3),
+	(8, 7, 6, 5, 9, 3, 2, 1, 0, 4),
+	(9, 8, 7, 6, 5, 4, 3, 2, 1, 0),
+)
+VERHOEFF_P = (
+	(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+	(1, 5, 7, 6, 2, 8, 3, 0, 9, 4),
+	(5, 8, 0, 3, 7, 9, 6, 1, 4, 2),
+	(8, 9, 1, 6, 0, 4, 3, 5, 2, 7),
+	(9, 4, 5, 3, 1, 2, 6, 8, 7, 0),
+	(4, 2, 8, 6, 5, 7, 3, 9, 0, 1),
+	(2, 7, 9, 3, 8, 0, 6, 4, 1, 5),
+	(7, 0, 4, 6, 9, 1, 3, 2, 5, 8),
+)
+
 
 class Tenant(Document):
-    def validate(self):
-        # These call the methods defined below
-        self.set_name()
-        self.check_aadhar()
+	def validate(self):
+		self.set_full_name()
+		self.check_aadhar()
 
-    def set_name(self):
-        # Indented 4 spaces to stay inside the class
-        parts = [self.first_name, self.middle_name, self.last_name]
-        self.full_name = " ".join(filter(None, parts)).strip()
+	def set_full_name(self):
+		parts = [self.first_name, self.middle_name, self.last_name]
+		self.full_name = " ".join(filter(None, parts)).strip()
 
-    def check_aadhar(self):
-        # Indented 4 spaces to stay inside the class
-        if not self.aadhar_card_number:
-            return
+	def check_aadhar(self):
+		if not self.aadhar_card_number:
+			return
 
-        # Verhoeff Algorithm Tables
-        d = [
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], 
-            [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], 
-            [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], 
-            [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], 
-            [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-        ]
-        p = [
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], 
-            [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], 
-            [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], 
-            [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
-        ]
+		aadhar = str(self.aadhar_card_number).replace(" ", "")
 
-        # 1. Clean input
-        aadhar = str(self.aadhar_card_number).replace(" ", "")
+		if not aadhar.isdigit() or len(aadhar) != 12:
+			frappe.throw(_("Aadhaar Number must be exactly 12 digits."))
 
-        # 2. Length Check
-        if not aadhar.isdigit() or len(aadhar) != 12:
-            frappe.throw(_("Aadhaar Number must be exactly 12 digits."))
+		if aadhar[0] in ("0", "1"):
+			frappe.throw(_("Invalid Aadhaar: Cannot start with 0 or 1."))
 
-        # 3. First Digit Rule
-        if aadhar[0] in ['0', '1']:
-            frappe.throw(_("Invalid Aadhaar: Cannot start with 0 or 1."))
+		if not is_valid_verhoeff(aadhar):
+			frappe.throw(_("Aadhaar validation failed. The checksum is incorrect."))
 
-        # 4. Verhoeff Checksum
-        c = 0
-        reversed_aadhar = aadhar[::-1]
-        
-        for i in range(len(reversed_aadhar)):
-            # Ensure this loop is properly indented under check_aadhar
-            c = d[c][p[i % 8][int(reversed_aadhar[i])]]
+		self.aadhar_card_number = aadhar
 
-        if c != 0:
-            frappe.throw(_("Aadhaar validation failed. The checksum is incorrect."))
-        else:
-           frappe.msgprint(
-    msg=_("Aadhaar has been successfully verified against the Verhoeff checksum."),
-    title=_("Verification Success"),
-    indicator="green"
-)
+		if self.has_value_changed("aadhar_card_number"):
+			frappe.msgprint(
+				msg=_("Aadhaar has been successfully verified against the Verhoeff checksum."),
+				title=_("Verification Success"),
+				indicator="green",
+			)
+
+
+def is_valid_verhoeff(number: str) -> bool:
+	c = 0
+	for i, digit in enumerate(reversed(number)):
+		c = VERHOEFF_D[c][VERHOEFF_P[i % 8][int(digit)]]
+	return c == 0

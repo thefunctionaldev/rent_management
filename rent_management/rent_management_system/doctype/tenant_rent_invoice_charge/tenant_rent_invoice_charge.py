@@ -1,0 +1,9 @@
+# Copyright (c) 2026, Shashank Dixit and contributors
+# For license information, please see license.txt
+
+# import frappe
+from frappe.model.document import Document
+
+
+class TenantRentInvoiceCharge(Document):
+	pass

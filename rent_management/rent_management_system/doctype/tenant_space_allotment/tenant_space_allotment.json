@@ -1,19 +1,28 @@
 {
  "actions": [],
- "allow_auto_repeat": 1,
  "allow_rename": 1,
- "autoname": "UUID",
+ "autoname": "naming_series:",
  "creation": "2026-02-01 00:03:18.740988",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "section_break_ic12",
-  "amended_from",
+  "naming_series",
   "tenant",
+  "tenant_name",
   "room",
+  "room_type",
   "column_break_prvq",
   "allotment_date",
-  "status"
+  "status",
+  "vacate_date",
+  "rent_section",
+  "rent_amount",
+  "column_break_rent",
+  "security_deposit",
+  "notes_section",
+  "notes",
+  "amended_from"
  ],
  "fields": [
   {
@@ -33,41 +42,128 @@
   {
    "fieldname": "tenant",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Tenant",
-   "options": "Tenant"
+   "options": "Tenant",
+   "reqd": 1
   },
   {
    "fieldname": "room",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Room",
    "link_filters": "[[\"Tenant Space\",\"status\",\"=\",\"Available\"]]",
-   "options": "Tenant Space"
+   "options": "Tenant Space",
+   "reqd": 1
   },
   {
+   "default": "Today",
    "fieldname": "allotment_date",
    "fieldtype": "Date",
-   "label": "Allotment Date"
+   "in_list_view": 1,
+   "label": "Allotment Date",
+   "reqd": 1
   },
   {
+   "allow_on_submit": 1,
+   "default": "Draft",
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Status",
-   "options": "\nAlloted\nReady to Allot"
+   "no_copy": 1,
+   "options": "Draft\nActive\nVacated\nCancelled",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_prvq",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "ALT-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ALT-.YYYY.-",
+   "print_hide": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fetch_from": "tenant.full_name",
+   "fieldname": "tenant_name",
+   "fieldtype": "Data",
+   "label": "Tenant Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "room.room_type",
+   "fieldname": "room_type",
+   "fieldtype": "Link",
+   "label": "Room Type",
+   "options": "Tenant Space Type",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "vacate_date",
+   "fieldtype": "Date",
+   "label": "Vacate Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rent_section",
+   "fieldtype": "Section Break",
+   "label": "Rent & Deposit"
+  },
+  {
+   "fetch_from": "room.room_rent",
+   "fetch_if_empty": 1,
+   "fieldname": "rent_amount",
+   "fieldtype": "Currency",
+   "label": "Monthly Rent",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_rent",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "security_deposit",
+   "fieldtype": "Currency",
+   "label": "Security Deposit"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2026-02-01 06:29:05.168973",
+ "links": [
+  {
+   "group": "Billing",
+   "link_doctype": "Tenant Rent Invoice",
+   "link_fieldname": "tenant_space_allotment"
+  }
+ ],
+ "modified": "2026-10-26 21:55:48.450238",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant Space Allotment",
- "naming_rule": "UUID",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -89,5 +185,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "tenant_name"
 }

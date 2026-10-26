@@ -143,6 +143,11 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
+scheduler_events = {
+	"daily": ["rent_management.rent_management_system.billing.mark_overdue_invoices"],
+	"monthly": ["rent_management.rent_management_system.billing.generate_monthly_invoices"],
+}
+
 # scheduler_events = {
 # 	"all": [
 # 		"rent_management.tasks.all"
@@ -249,4 +254,3 @@ app_license = "mit"
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-

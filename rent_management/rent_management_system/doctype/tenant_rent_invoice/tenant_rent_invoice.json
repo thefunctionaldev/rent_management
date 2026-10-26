@@ -8,20 +8,39 @@
  "field_order": [
   "section_break_p7mt",
   "naming_series",
+  "tenant_space_allotment",
   "tenant",
   "tenant_name",
   "room",
-  "total_days",
-  "posting_date",
-  "status",
   "column_break_vcam",
+  "posting_date",
+  "due_date",
+  "status",
+  "billing_period_section",
   "billing_month",
   "billing_year",
-  "monthly_rent",
+  "column_break_period",
+  "from_date",
+  "to_date",
+  "column_break_days",
+  "total_days",
   "days_stayed",
+  "rent_section",
+  "monthly_rent",
+  "column_break_rent",
+  "pro_rated_rent",
+  "charges_section",
+  "charges",
+  "totals_section",
+  "total_charges",
+  "discount_amount",
+  "column_break_totals",
   "final_amount",
-  "amended_from",
-  "tenant_space_allotment"
+  "paid_amount",
+  "outstanding_amount",
+  "more_info_section",
+  "remarks",
+  "amended_from"
  ],
  "fields": [
   {
@@ -39,17 +58,23 @@
    "search_index": 1
   },
   {
+   "fetch_from": "tenant_space_allotment.tenant",
    "fieldname": "tenant",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Tenant",
    "options": "Tenant",
+   "read_only": 1,
    "reqd": 1
   },
   {
+   "fetch_from": "tenant_space_allotment.room",
    "fieldname": "room",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Room",
    "options": "Tenant Space",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -57,27 +82,30 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Billing Month",
-   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nseptember\nOctober\nNovember\nDecember",
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
    "reqd": 1
   },
   {
    "fieldname": "billing_year",
    "fieldtype": "Int",
+   "in_list_view": 1,
    "label": "Billing Year",
-   "length": 4,
-   "non_negative": 1
+   "non_negative": 1,
+   "reqd": 1
   },
   {
-   "fetch_from": "room.room_rent",
+   "fetch_from": "tenant_space_allotment.rent_amount",
+   "fetch_if_empty": 1,
    "fieldname": "monthly_rent",
    "fieldtype": "Currency",
    "label": "Monthly Rent",
-   "non_negative": 1
+   "reqd": 1
   },
   {
    "fieldname": "total_days",
    "fieldtype": "Int",
-   "label": "Total Days"
+   "label": "Days in Month",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_vcam",
@@ -86,13 +114,16 @@
   {
    "fieldname": "days_stayed",
    "fieldtype": "Int",
-   "label": "Days Stayed"
+   "label": "Days Billed",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "fieldname": "final_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Final Amount"
+   "label": "Grand Total",
+   "read_only": 1
   },
   {
    "fetch_from": "tenant.full_name",
@@ -103,39 +134,158 @@
    "read_only": 1
   },
   {
+   "default": "TRI-.####",
    "fieldname": "naming_series",
    "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Naming Series",
+   "label": "Series",
    "options": "TRI-.####",
+   "print_hide": 1,
    "reqd": 1
   },
   {
+   "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
-   "label": "Posting Date"
+   "label": "Posting Date",
+   "reqd": 1
   },
   {
    "fieldname": "tenant_space_allotment",
    "fieldtype": "Link",
-   "label": "Tenant Space Allotment",
-   "options": "Tenant Space Allotment"
+   "label": "Allotment",
+   "link_filters": "[[\"Tenant Space Allotment\",\"docstatus\",\"=\",1]]",
+   "options": "Tenant Space Allotment",
+   "reqd": 1
   },
   {
    "allow_on_submit": 1,
+   "default": "Draft",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Status",
-   "options": "\nPaid\nUnpaid",
-   "sticky": 1
+   "no_copy": 1,
+   "options": "Draft\nUnpaid\nPartly Paid\nPaid\nOverdue\nCancelled",
+   "read_only": 1
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Due Date"
+  },
+  {
+   "fieldname": "billing_period_section",
+   "fieldtype": "Section Break",
+   "label": "Billing Period"
+  },
+  {
+   "fieldname": "column_break_period",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_days",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rent_section",
+   "fieldtype": "Section Break",
+   "label": "Rent"
+  },
+  {
+   "fieldname": "column_break_rent",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pro_rated_rent",
+   "fieldtype": "Currency",
+   "label": "Rent for Days Billed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "charges_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Charges"
+  },
+  {
+   "fieldname": "charges",
+   "fieldtype": "Table",
+   "label": "Charges",
+   "options": "Tenant Rent Invoice Charge"
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "total_charges",
+   "fieldtype": "Currency",
+   "label": "Total Additional Charges",
+   "read_only": 1
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Currency",
+   "label": "Discount Amount",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_totals",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "paid_amount",
+   "fieldtype": "Currency",
+   "label": "Paid Amount",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "bold": 1,
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Outstanding Amount",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "more_info_section",
+   "fieldtype": "Section Break",
+   "label": "More Info"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2026-02-01 06:54:37.642553",
+ "links": [
+  {
+   "group": "Payments",
+   "link_doctype": "Rent Payment",
+   "link_fieldname": "rent_invoice"
+  }
+ ],
+ "modified": "2026-10-26 21:55:48.731275",
  "modified_by": "Administrator",
  "module": "Rent Management System",
  "name": "Tenant Rent Invoice",
@@ -169,5 +319,6 @@
    "color": "Orange",
    "title": "Unpaid"
   }
- ]
+ ],
+ "title_field": "tenant_name"
 }
